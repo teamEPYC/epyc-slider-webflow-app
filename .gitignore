@@ -1,0 +1,45 @@
+# Node.js dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Logs
+logs/
+*.log
+*.log.*
+
+# Build output
+dist/
+build/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Backend specific
+epyc-slider-backend/.env
+epyc-slider-backend/node_modules/
+epyc-slider-backend/logs/
+epyc-slider-backend/dist/
+
+# Plugin specific
+slider-plugin/node_modules/
+slider-plugin/dist/
+
+# IDE specific
+.idea/
+.vscode/
+*.swp
+
+# MacOS specific
+*.DS_Store
+
+# Temporary files
+*.tmp
+*.temp

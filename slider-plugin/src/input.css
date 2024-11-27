@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply antialiased text-gray-900;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2;
+  }
+}
+* {
+  font-family: "Inter", sans-serif;
+}
+
+.swiper-pagination-progressbar {
+  position: absolute !important;
+}
+.swiper-slide,
+swiper-slide {
+  display: flex !important;
+}
