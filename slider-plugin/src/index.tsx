@@ -1,6 +1,5 @@
 import React, { useReducer, useState } from "react";
 import ReactDOM from "react-dom/client";
-import { sliderTemplateList } from "./constants/SliderTemplateList";
 import { Filter, Loader2, Settings, SlidersHorizontal } from "lucide-react";
 import PreviewScreen from "./components/PreviewScreen";
 import {

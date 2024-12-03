@@ -412,16 +412,14 @@ export const insertCustomConfigSliderComponent = async ({
 
 export async function getToken() {
   try {
+    const baseURL = process.env.BASE_URL;
     const idToken = await webflow.getIdToken();
     console.log(idToken);
     const siteInfo = await webflow.getSiteInfo();
-    const tokenResponse = await fetch(
-      "https://epyc-slider-worker.aayushman.workers.dev/auth/user",
-      {
-        method: "POST",
-        body: JSON.stringify({ idToken: idToken, siteId: siteInfo.siteId }),
-      }
-    );
+    const tokenResponse = await fetch(`${baseURL}/auth/user`, {
+      method: "POST",
+      body: JSON.stringify({ idToken: idToken, siteId: siteInfo.siteId }),
+    });
     const data = await tokenResponse.json();
     return data;
   } catch (error) {
@@ -431,14 +429,12 @@ export async function getToken() {
 
 export async function storeConfig(config: SliderTypesConfig) {
   try {
+    const baseURL = process.env.BASE_URL;
     const siteInfo = await webflow.getSiteInfo();
-    const storeConfigResponse = await fetch(
-      "https://epyc-slider-worker.aayushman.workers.dev/store-token",
-      {
-        method: "POST",
-        body: JSON.stringify({ config: config, site: siteInfo.siteName }),
-      }
-    );
+    const storeConfigResponse = await fetch(`${baseURL}/store-token`, {
+      method: "POST",
+      body: JSON.stringify({ config: config, site: siteInfo.siteName }),
+    });
     const response = await storeConfigResponse.json();
     return response;
   } catch (error) {
@@ -451,9 +447,8 @@ export async function storeConfig(config: SliderTypesConfig) {
 
 export async function getPresets() {
   try {
-    const presetsResponse = await fetch(
-      "https://epyc-slider-worker.aayushman.workers.dev/get-presets"
-    );
+    const baseURL = process.env.BASE_URL;
+    const presetsResponse = await fetch(`${baseURL}/get-presets`);
     const data = await presetsResponse.json();
     return data as PresetResponse;
   } catch (error) {
