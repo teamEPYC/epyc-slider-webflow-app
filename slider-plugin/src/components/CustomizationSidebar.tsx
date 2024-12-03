@@ -1,12 +1,16 @@
 import { ArrowLeft } from "lucide-react";
 import React from "react";
-import { insertCustomConfigSliderComponent } from "../lib/slider-utils";
+import {
+  insertCustomConfigSliderComponent,
+  storeConfig,
+} from "../lib/slider-utils";
 import {
   EffectsConfig,
   ModuleConfig,
   ParametersConfig,
   SliderTypesConfig,
 } from "src/types/sliderTypes";
+import { useMutation } from "@tanstack/react-query";
 
 type Props = {
   parametersConfig: ParametersConfig;
@@ -32,6 +36,10 @@ function CustomizationSidebar({
   resetAuth,
 }: Props) {
   console.log(effectsConfig);
+
+  const { mutate: sendConfig } = useMutation({
+    mutationFn: () => storeConfig(config),
+  });
   return (
     <div className="bg-[#292929] border-r border-neutral-800 flex flex-col">
       <div className="flex-1 overflow-y-auto">
@@ -247,12 +255,13 @@ function CustomizationSidebar({
         </button>
         <button
           type="button"
-          onClick={() =>
+          onClick={() => {
+            sendConfig();
             insertCustomConfigSliderComponent({
               config: config,
               resetAuth: resetAuth,
-            })
-          }
+            });
+          }}
           className="px-4 py-2 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700 transition-colors"
         >
           Insert

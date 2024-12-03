@@ -429,6 +429,26 @@ export async function getToken() {
   }
 }
 
+export async function storeConfig(config: SliderTypesConfig) {
+  try {
+    const siteInfo = await webflow.getSiteInfo();
+    const storeConfigResponse = await fetch(
+      "https://epyc-slider-worker.aayushman.workers.dev/store-token",
+      {
+        method: "POST",
+        body: JSON.stringify({ config, site: siteInfo.siteName }),
+      }
+    );
+    const response = await storeConfigResponse.json();
+    return response;
+  } catch (error) {
+    console.log({
+      message: "Some error occured while storing the config",
+      error: error,
+    });
+  }
+}
+
 export async function getPresets() {
   try {
     const presetsResponse = await fetch(

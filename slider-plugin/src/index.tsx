@@ -74,6 +74,7 @@ const App: React.FC = () => {
     );
   }
   const sliderPresets = presetsData.presets || [];
+
   if (status === "success") {
     localStorage.setItem("webflow-jwt", data.token);
   }
