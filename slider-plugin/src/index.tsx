@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useReducer, useState } from "react";
 import ReactDOM from "react-dom/client";
 import { sliderTemplateList } from "./constants/SliderTemplateList";
-import { Filter, Settings, SlidersHorizontal } from "lucide-react";
+import { Filter, Loader2, Settings, SlidersHorizontal } from "lucide-react";
 import PreviewScreen from "./components/PreviewScreen";
-import { insertCustomConfigSliderComponent } from "./lib/slider-utils";
+import {
+  getToken,
+  insertCustomConfigSliderComponent,
+} from "./lib/slider-utils";
 import {
   EffectsConfig,
   initialSliderConfig,
@@ -12,6 +15,15 @@ import {
   SliderTypesConfig,
 } from "./types/sliderTypes";
 import CustomizationSidebar from "./components/CustomizationSidebar";
+// import { useAuth } from "./lib/useAuth";
+import {
+  QueryClient,
+  QueryClientProvider,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+import { authReducer, initialAuthState } from "./reducers/authRecucers";
 
 export const getOrCreateStyle = async (styleName: string) => {
   let style = await webflow.getStyleByName(styleName);
@@ -21,9 +33,39 @@ export const getOrCreateStyle = async (styleName: string) => {
   return style;
 };
 const App: React.FC = () => {
+  const queryClient = useQueryClient();
   const [isCustomizeModeOn, setIsCustomizeModeOn] = useState<boolean>(false);
   const [sliderConfig, setSliderConfig] =
     useState<SliderTypesConfig>(initialSliderConfig);
+
+  const { status, data, error } = useQuery({
+    queryKey: ["jwt"],
+    queryFn: getToken,
+  });
+
+  function resetAuth() {
+    localStorage.removeItem("webflow-jwt");
+    queryClient.invalidateQueries["jwt"];
+  }
+  if (status === "pending") {
+    return (
+      <div className="w-full h-screen flex items-center justify-center">
+        <Loader2 className="text-white animate-spin" />
+      </div>
+    );
+  }
+
+  if (status === "error") {
+    return (
+      <div className="w-full h-full flex items-center justify-center text-red-500">
+        <p>Error: {error.message}</p>
+      </div>
+    );
+  }
+  if (status === "success") {
+    localStorage.setItem("webflow-jwt", data.token);
+    // dispatch({ type: "SET_TOKEN", payload: data.token });
+  }
 
   function resetconfig() {
     setIsCustomizeModeOn(false);
@@ -86,6 +128,7 @@ const App: React.FC = () => {
           onModuleUpdate={updateModuleValue}
           config={sliderConfig}
           resetconfig={resetconfig}
+          resetAuth={resetAuth}
         />
 
         <div className="flex justify-center items-center p-8">
@@ -142,7 +185,10 @@ const App: React.FC = () => {
                       <button
                         type="button"
                         onClick={() =>
-                          insertCustomConfigSliderComponent({ config: preset })
+                          insertCustomConfigSliderComponent({
+                            config: preset,
+                            resetAuth: resetAuth,
+                          })
                         }
                         className=" bg-[#0A5BD4] text-white px-2 text-xs py-1 rounded-md hover:bg-blue-700 transition-colors duration-200"
                       >
@@ -183,4 +229,9 @@ await initializeExtension();
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
-root.render(<App />);
+const queryClient = new QueryClient();
+root.render(
+  <QueryClientProvider client={queryClient}>
+    <App />
+  </QueryClientProvider>
+);

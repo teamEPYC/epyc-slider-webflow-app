@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: `http://localhost:8080/api/`,
+  baseURL: `https://epyc-slider-worker.aayushman.workers.dev`,
   headers: {
     "Content-Type": "application/json",
   },

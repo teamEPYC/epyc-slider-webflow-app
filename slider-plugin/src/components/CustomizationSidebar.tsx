@@ -17,6 +17,7 @@ type Props = {
   onModuleUpdate: Function;
   config: SliderTypesConfig;
   resetconfig: Function;
+  resetAuth: Function;
 };
 
 function CustomizationSidebar({
@@ -28,6 +29,7 @@ function CustomizationSidebar({
   onModuleUpdate,
   config,
   resetconfig,
+  resetAuth,
 }: Props) {
   console.log(effectsConfig);
   return (
@@ -245,7 +247,12 @@ function CustomizationSidebar({
         </button>
         <button
           type="button"
-          onClick={() => insertCustomConfigSliderComponent({ config: config })}
+          onClick={() =>
+            insertCustomConfigSliderComponent({
+              config: config,
+              resetAuth: resetAuth,
+            })
+          }
           className="px-4 py-2 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700 transition-colors"
         >
           Insert

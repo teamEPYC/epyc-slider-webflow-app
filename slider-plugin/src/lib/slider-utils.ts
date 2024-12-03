@@ -1,12 +1,14 @@
 import axiosInstance from "./axiosInstance";
 import { SliderTypesConfig } from "src/types/sliderTypes";
+import { JwtTokenInvalid } from "hono/utils/jwt/types";
+
+// import { useAuth } from "./useAuth";
 
 export async function applyStyles(element: any, styles: any[]) {
   if (element && styles.length > 0) {
     await element.setStyles(styles);
   }
 }
-
 export async function setCustomAttribute(
   element: any,
   attribute: string,
@@ -92,9 +94,8 @@ export async function createProgressPagination(parentDiv: any, styles: any) {
   await applyStyles(progressPaginationDiv, [wrapperStyle]);
 
   const progressDiv = await progressPaginationDiv.append(
-    webflow.elementPresets.DOM
+    webflow.elementPresets.DivBlock
   );
-  progressDiv.setTag("span");
   await applyStyles(progressDiv, [progressStyle]);
 }
 
@@ -142,29 +143,44 @@ export async function createSliderStructure(parentDiv: any) {
 
 export const insertCustomConfigSliderComponent = async ({
   config,
+  resetAuth,
 }: {
   config: SliderTypesConfig;
+  resetAuth: Function;
 }) => {
   try {
+    console.log(webflow);
     const currentPageID = await webflow.getCurrentPage();
     console.log(currentPageID.id);
     const siteId = await webflow.getSiteInfo();
     console.log(siteId);
     const handleApply = async () => {
       try {
+        const jwt = localStorage.getItem("webflow-jwt");
+        console.log(
+          localStorage.getItem("webflow-jwt"),
+          "duahidghawghdghaidhl"
+        );
         console.log("Applying custom script to the page...");
 
         const response = await axiosInstance.put(
-          `/custom-code/pages/${currentPageID.id}/upsertCustomCode`,
+          `/pages/${currentPageID.id}/upsertCode`,
           {
             selectedScript: "headerlink",
             version: "0.0.1",
-            siteId: siteId.siteId,
+            JWT: jwt,
           }
         );
 
         console.log("Script applied successfully:", response.data);
       } catch (error) {
+        if (error instanceof JwtTokenInvalid) {
+          console.error("JWT ERROR:", {
+            status: error.message,
+            name: error.name,
+          });
+          resetAuth();
+        }
         if (error.response) {
           console.error("API Error:", {
             status: error.response.status,
@@ -322,6 +338,10 @@ export const insertCustomConfigSliderComponent = async ({
         );
         await styles.progressPagination.progressStyle.setProperties({
           "background-color": "blue",
+          display: "block",
+          "transform-origin": "0% 50%",
+          height: "100%",
+          // width: "100%",
         });
       }
     }
@@ -387,3 +407,24 @@ export const insertCustomConfigSliderComponent = async ({
     console.error("Failed to insert slider component:", error);
   }
 };
+
+//  helper functions
+
+export async function getToken() {
+  try {
+    const idToken = await webflow.getIdToken();
+    console.log(idToken);
+    const siteInfo = await webflow.getSiteInfo();
+    const tokenResponse = await fetch(
+      "https://epyc-slider-worker.aayushman.workers.dev/auth/user",
+      {
+        method: "POST",
+        body: JSON.stringify({ idToken: idToken, siteId: siteInfo.siteId }),
+      }
+    );
+    const data = await tokenResponse.json();
+    return data;
+  } catch (error) {
+    if (error instanceof Error) console.log(error.message);
+  }
+}
