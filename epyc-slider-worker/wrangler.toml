@@ -1,0 +1,40 @@
+name = "epyc-slider-worker"
+main = "src/index.ts"
+compatibility_date = "2024-11-27"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "site-tokens"
+migrations_table = "d1_migrations"
+database_id = "630d0820-cf14-4dfe-9d33-a2847f201081"
+migrations_dir = "migrations"
+
+# compatibility_flags = [ "nodejs_compat" ]
+
+[vars]
+WEBFLOW_CLIENT_ID = "485bb744e7cb5179fd6bc3bfb7cfb75a7a0d55e2dd8183e31ab38754be6bb2e9"
+WEBFLOW_CLIENT_SECRET = "76fd441506c386bb130d7e31b6f2e83760534d6cbb391b1c7da5957e3c4c4d16"
+REDIRECT_URL = "https://2e1a-103-173-93-187.ngrok-free.app"
+PORT = 8080
+VITE_PORT = 1337
+# MY_VAR = "my-variable"
+
+# [[kv_namespaces]]
+# binding = "MY_KV_NAMESPACE"
+# id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+
+# [[r2_buckets]]
+# binding = "MY_BUCKET"
+# bucket_name = "my-bucket"
+
+# [[d1_databases]]
+# binding = "DB"
+# database_name = "my-database"
+# database_id = ""
+
+# [ai]
+# binding = "AI"
+
+[observability]
+enabled = true
+# head_sampling_rate = 1
