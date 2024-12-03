@@ -128,6 +128,41 @@ app.post("/auth/user", async (c) => {
   }
 });
 
+app.post("store-token", async (c) => {
+  try {
+    const { config, site } = await c.req.json();
+    const id = crypto.randomUUID();
+    const stringConfig = JSON.stringify(config);
+    const statement = c.env.DB.prepare(
+      `INSERT INTO site_config VALUES(?,?,?)`
+    ).bind(id, site, stringConfig);
+    await statement.run();
+    return c.json({ message: "Config stored succesfully" }, { status: 200 });
+  } catch (error) {
+    if (error instanceof Error) {
+      console.log({
+        message: "Some error occured while storing the token please try again",
+        error: error.message,
+      });
+      return c.json(
+        {
+          message: "Error in storing config please try again ",
+          error: error.message,
+        },
+        { status: 500 }
+      );
+    }
+    console.log({
+      message: "Some error occured while storing the token please try again",
+      error: error,
+    });
+    return c.json(
+      { message: "Error in storing config please try again ", error: error },
+      { status: 500 }
+    );
+  }
+});
+
 app.get("/get-presets", async (c) => {
   try {
     return c.json({ presets: sliderTemplateList }, { status: 200 });

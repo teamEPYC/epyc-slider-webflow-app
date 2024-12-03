@@ -1,4 +1,4 @@
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Loader2, LoaderPinwheelIcon } from "lucide-react";
 import React from "react";
 import {
   insertCustomConfigSliderComponent,
@@ -37,7 +37,7 @@ function CustomizationSidebar({
 }: Props) {
   console.log(effectsConfig);
 
-  const { mutate: sendConfig } = useMutation({
+  const { mutate: sendConfig, isPending } = useMutation({
     mutationFn: () => storeConfig(config),
   });
   return (
@@ -254,6 +254,7 @@ function CustomizationSidebar({
           back
         </button>
         <button
+          disabled={isPending}
           type="button"
           onClick={() => {
             sendConfig();
@@ -262,9 +263,13 @@ function CustomizationSidebar({
               resetAuth: resetAuth,
             });
           }}
-          className="px-4 py-2 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700 transition-colors"
+          className="px-4 flex justify-center py-2 w-20 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700 transition-colors"
         >
-          Insert
+          {isPending ? (
+            <Loader2 className="size-5 animate-spin" />
+          ) : (
+            <p>Insert</p>
+          )}
         </button>
       </div>
     </div>

@@ -436,7 +436,7 @@ export async function storeConfig(config: SliderTypesConfig) {
       "https://epyc-slider-worker.aayushman.workers.dev/store-token",
       {
         method: "POST",
-        body: JSON.stringify({ config, site: siteInfo.siteName }),
+        body: JSON.stringify({ config: config, site: siteInfo.siteName }),
       }
     );
     const response = await storeConfigResponse.json();
