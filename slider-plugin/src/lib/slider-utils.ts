@@ -1,5 +1,5 @@
 import axiosInstance from "./axiosInstance";
-import { SliderTypesConfig } from "src/types/sliderTypes";
+import { PresetResponse, SliderTypesConfig } from "src/types/sliderTypes";
 import { JwtTokenInvalid } from "hono/utils/jwt/types";
 
 // import { useAuth } from "./useAuth";
@@ -426,5 +426,20 @@ export async function getToken() {
     return data;
   } catch (error) {
     if (error instanceof Error) console.log(error.message);
+  }
+}
+
+export async function getPresets() {
+  try {
+    const presetsResponse = await fetch(
+      "https://epyc-slider-worker.aayushman.workers.dev/get-presets"
+    );
+    const data = await presetsResponse.json();
+    return data as PresetResponse;
+  } catch (error) {
+    console.log({
+      message: "Some error happened please try again",
+      error: error,
+    });
   }
 }

@@ -4,6 +4,7 @@ import { sliderTemplateList } from "./constants/SliderTemplateList";
 import { Filter, Loader2, Settings, SlidersHorizontal } from "lucide-react";
 import PreviewScreen from "./components/PreviewScreen";
 import {
+  getPresets,
   getToken,
   insertCustomConfigSliderComponent,
 } from "./lib/slider-utils";
@@ -19,11 +20,9 @@ import CustomizationSidebar from "./components/CustomizationSidebar";
 import {
   QueryClient,
   QueryClientProvider,
-  useMutation,
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import { authReducer, initialAuthState } from "./reducers/authRecucers";
 
 export const getOrCreateStyle = async (styleName: string) => {
   let style = await webflow.getStyleByName(styleName);
@@ -37,17 +36,25 @@ const App: React.FC = () => {
   const [isCustomizeModeOn, setIsCustomizeModeOn] = useState<boolean>(false);
   const [sliderConfig, setSliderConfig] =
     useState<SliderTypesConfig>(initialSliderConfig);
-
   const { status, data, error } = useQuery({
     queryKey: ["jwt"],
     queryFn: getToken,
+  });
+
+  const {
+    status: presetStatus,
+    data: presetsData,
+    error: presetsError,
+  } = useQuery({
+    queryKey: ["presets"],
+    queryFn: getPresets,
   });
 
   function resetAuth() {
     localStorage.removeItem("webflow-jwt");
     queryClient.invalidateQueries["jwt"];
   }
-  if (status === "pending") {
+  if (status === "pending" || presetStatus === "pending") {
     return (
       <div className="w-full h-screen flex items-center justify-center">
         <Loader2 className="text-white animate-spin" />
@@ -55,16 +62,20 @@ const App: React.FC = () => {
     );
   }
 
-  if (status === "error") {
+  if (status === "error" || presetStatus === "error") {
     return (
       <div className="w-full h-full flex items-center justify-center text-red-500">
-        <p>Error: {error.message}</p>
+        {status === "error" ? (
+          <p>Error: {error.message}</p>
+        ) : (
+          <p>Error: {presetsError.message}</p>
+        )}
       </div>
     );
   }
+  const sliderPresets = presetsData.presets || [];
   if (status === "success") {
     localStorage.setItem("webflow-jwt", data.token);
-    // dispatch({ type: "SET_TOKEN", payload: data.token });
   }
 
   function resetconfig() {
@@ -174,7 +185,7 @@ const App: React.FC = () => {
             Choose a Preset
           </h2>
           <div className="flex flex-col gap-6">
-            {sliderTemplateList.map((preset, index) => (
+            {sliderPresets.map((preset: SliderTypesConfig, index) => (
               <div key={index} className="group">
                 <div className="bg-[#212222] rounded-xl border border-neutral-800 p-4 hover:border-neutral-700 transition-all duration-200">
                   <div className="flex justify-between items-start gap-2 border-b-2 border-[#303030] pb-4">

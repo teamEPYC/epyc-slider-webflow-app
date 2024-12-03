@@ -16,6 +16,10 @@ import {
 
 import React, { type ElementType } from "react";
 
+export type PresetResponse = {
+  presets: SliderTypesConfig[];
+};
+
 export type SlideDirection = "horizontal" | "vertical";
 export type LoopMode = boolean;
 export type EffectType =
