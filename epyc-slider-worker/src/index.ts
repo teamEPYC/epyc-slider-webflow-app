@@ -10,7 +10,7 @@ import {
   verifyregisteredScrips,
   verifySiteId,
 } from "./utils/zodtypes";
-import { inlineScript } from "./constants";
+import { inlineScript, sliderTemplateList } from "./constants";
 import { JwtTokenInvalid } from "hono/utils/jwt/types";
 
 import { cors } from "hono/cors";
@@ -125,6 +125,14 @@ app.post("/auth/user", async (c) => {
         { status: 500 }
       );
     }
+  }
+});
+
+app.get("/user/get-presets", async (c) => {
+  try {
+    return c.json({ presets: sliderTemplateList }, { status: 200 });
+  } catch (error) {
+    return c.json({ message: "Error Returning Presets" }, { status: 400 });
   }
 });
 
