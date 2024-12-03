@@ -128,7 +128,7 @@ app.post("/auth/user", async (c) => {
   }
 });
 
-app.get("/user/get-presets", async (c) => {
+app.get("/get-presets", async (c) => {
   try {
     return c.json({ presets: sliderTemplateList }, { status: 200 });
   } catch (error) {
