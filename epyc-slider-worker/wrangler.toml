@@ -1,4 +1,4 @@
-name = "epyc-slider-worker"
+name = "epyc-webflow-slider-app-backend"
 main = "src/index.ts"
 compatibility_date = "2024-11-27"
 
