@@ -45,7 +45,4 @@ npm run dev
 ```
 npx tailwindcss -i ./src/input.css -o ./public/styles.css --watch
 ``` 
-## Appendix
-
-Any additional information goes here
 
