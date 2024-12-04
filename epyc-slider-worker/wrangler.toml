@@ -4,9 +4,9 @@ compatibility_date = "2024-11-27"
 
 [[d1_databases]]
 binding = "DB"
-database_name = "site-tokens"
+database_name = "epyc-slider-app-db"
 migrations_table = "d1_migrations"
-database_id = "630d0820-cf14-4dfe-9d33-a2847f201081"
+database_id = "8a8a6a64-61b5-4ab9-97f3-8f1eeb481061"
 migrations_dir = "migrations"
 
 # compatibility_flags = [ "nodejs_compat" ]
