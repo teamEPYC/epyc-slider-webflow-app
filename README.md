@@ -41,7 +41,7 @@ JWT_SECRET=""
 ```
 npm run dev
 ```
-- Additonaly in slider-plugin termial run the following command to make tailwind css work......
+- Additonaly in slider-plugin termial run the following command to make tailwind css work.......
 ```
 npx tailwindcss -i ./src/input.css -o ./public/styles.css --watch
 ``` 
