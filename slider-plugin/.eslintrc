@@ -16,6 +16,7 @@
       "error",
       { "checksVoidReturn": false }
     ],
+    "node": true,
     "@typescript-eslint/no-unused-vars": "error",
     "no-async-promise-executor": "error",
     "require-await": "error",

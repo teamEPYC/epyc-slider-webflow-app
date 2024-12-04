@@ -101,7 +101,6 @@ const App: React.FC = () => {
     key: K,
     value: ParametersConfig[K]["value"]
   ) => {
-    console.log(value, "key");
     setSliderConfig((prev) => ({
       ...prev,
       parameters: {
@@ -123,8 +122,6 @@ const App: React.FC = () => {
       },
     }));
   };
-
-  console.log({ TestingConfig: sliderConfig });
   // new code ends
 
   if (isCustomizeModeOn) {

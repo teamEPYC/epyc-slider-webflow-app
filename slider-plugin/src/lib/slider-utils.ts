@@ -1,4 +1,4 @@
-import axiosInstance from "./axiosInstance";
+import axiosInstance, { baseURL } from "./axiosInstance";
 import { PresetResponse, SliderTypesConfig } from "src/types/sliderTypes";
 import { JwtTokenInvalid } from "hono/utils/jwt/types";
 
@@ -149,18 +149,11 @@ export const insertCustomConfigSliderComponent = async ({
   resetAuth: Function;
 }) => {
   try {
-    console.log(webflow);
     const currentPageID = await webflow.getCurrentPage();
-    console.log(currentPageID.id);
     const siteId = await webflow.getSiteInfo();
-    console.log(siteId);
     const handleApply = async () => {
       try {
         const jwt = localStorage.getItem("webflow-jwt");
-        console.log(
-          localStorage.getItem("webflow-jwt"),
-          "duahidghawghdghaidhl"
-        );
         console.log("Applying custom script to the page...");
 
         const response = await axiosInstance.put(
@@ -172,7 +165,7 @@ export const insertCustomConfigSliderComponent = async ({
           }
         );
 
-        console.log("Script applied successfully:", response.data);
+        console.log("Script applied successfully:");
       } catch (error) {
         if (error instanceof JwtTokenInvalid) {
           console.error("JWT ERROR:", {
@@ -412,9 +405,7 @@ export const insertCustomConfigSliderComponent = async ({
 
 export async function getToken() {
   try {
-    const baseURL = process.env.BASE_URL;
     const idToken = await webflow.getIdToken();
-    console.log(idToken);
     const siteInfo = await webflow.getSiteInfo();
     const tokenResponse = await fetch(`${baseURL}/auth/user`, {
       method: "POST",
@@ -429,7 +420,6 @@ export async function getToken() {
 
 export async function storeConfig(config: SliderTypesConfig) {
   try {
-    const baseURL = process.env.BASE_URL;
     const siteInfo = await webflow.getSiteInfo();
     const storeConfigResponse = await fetch(`${baseURL}/store-token`, {
       method: "POST",
@@ -447,7 +437,6 @@ export async function storeConfig(config: SliderTypesConfig) {
 
 export async function getPresets() {
   try {
-    const baseURL = process.env.BASE_URL;
     const presetsResponse = await fetch(`${baseURL}/get-presets`);
     const data = await presetsResponse.json();
     return data as PresetResponse;

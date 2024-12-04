@@ -1,7 +1,8 @@
 import axios from "axios";
 
+export const baseURL = "https://epyc-slider-worker.aayushman.workers.dev";
 const axiosInstance = axios.create({
-  baseURL: process.env.BASE_URL,
+  baseURL: baseURL,
   headers: {
     "Content-Type": "application/json",
   },
