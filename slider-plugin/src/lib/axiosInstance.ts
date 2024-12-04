@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const baseURL = "https://epyc-slider-worker.aayushman.workers.dev";
+export const baseURL = process.env.REACT_APP_BASE_URL;
 const axiosInstance = axios.create({
   baseURL: baseURL,
   headers: {

@@ -1,4 +1,4 @@
-import axiosInstance, { baseURL } from "./axiosInstance";
+import axiosInstance from "./axiosInstance";
 import { PresetResponse, SliderTypesConfig } from "src/types/sliderTypes";
 import { JwtTokenInvalid } from "hono/utils/jwt/types";
 
@@ -405,6 +405,7 @@ export const insertCustomConfigSliderComponent = async ({
 
 export async function getToken() {
   try {
+    const baseURL = process.env.REACT_APP_BASE_URL;
     const idToken = await webflow.getIdToken();
     const siteInfo = await webflow.getSiteInfo();
     const tokenResponse = await fetch(`${baseURL}/auth/user`, {
@@ -420,6 +421,7 @@ export async function getToken() {
 
 export async function storeConfig(config: SliderTypesConfig) {
   try {
+    const baseURL = process.env.REACT_APP_BASE_URL;
     const siteInfo = await webflow.getSiteInfo();
     const storeConfigResponse = await fetch(`${baseURL}/store-token`, {
       method: "POST",
@@ -437,6 +439,7 @@ export async function storeConfig(config: SliderTypesConfig) {
 
 export async function getPresets() {
   try {
+    const baseURL = process.env.REACT_APP_BASE_URL;
     const presetsResponse = await fetch(`${baseURL}/get-presets`);
     const data = await presetsResponse.json();
     return data as PresetResponse;
