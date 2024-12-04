@@ -12,11 +12,8 @@ migrations_dir = "migrations"
 # compatibility_flags = [ "nodejs_compat" ]
 
 [vars]
-WEBFLOW_CLIENT_ID = "485bb744e7cb5179fd6bc3bfb7cfb75a7a0d55e2dd8183e31ab38754be6bb2e9"
-WEBFLOW_CLIENT_SECRET = "76fd441506c386bb130d7e31b6f2e83760534d6cbb391b1c7da5957e3c4c4d16"
-REDIRECT_URL = "https://2e1a-103-173-93-187.ngrok-free.app"
-PORT = 8080
-VITE_PORT = 1337
+WEBFLOW_CLIENT_ID = "516ad6cc9cb1d3b4a1780e18aaa8feed7ae4285d9db0ff8e480576cf969e6c00"
+REDIRECT_URL = "https://epyc-slider-api.epyc.us/auth"
 # MY_VAR = "my-variable"
 
 # [[kv_namespaces]]
